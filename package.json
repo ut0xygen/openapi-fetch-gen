@@ -10,7 +10,6 @@
   ],
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
     "lint": "biome check src",
     "fix": "biome check --write src",
     "test": "vitest run",
@@ -32,18 +31,18 @@
   "author": "moznion",
   "license": "MIT",
   "dependencies": {
-    "commander": "^11.1.0",
-    "ts-morph": "^20.0.0",
-    "typescript": "^5.2.2"
+    "commander": "^13.1.0",
+    "ts-morph": "^25.0.1",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/node": "^20.8.2",
-    "@vitest/coverage-v8": "3.1.1",
-    "openapi-fetch": "^0.8.1",
-    "vitest": "3.1.1"
+    "@types/node": "^22.14.1",
+    "@vitest/coverage-v8": "^3.1.1",
+    "openapi-fetch": "^0.13.5",
+    "vitest": "^3.1.1"
   },
   "peerDependencies": {
-    "openapi-fetch": ">=0.7.0"
+    "openapi-fetch": ">=0.13.5"
   }
 }
