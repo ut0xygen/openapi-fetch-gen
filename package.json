@@ -1,0 +1,49 @@
+{
+  "name": "openapi-fetch-gen",
+  "version": "0.1.0",
+  "description": "Generate TypeScript API client from OpenAPI TypeScript definitions",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "bin": {
+    "openapi-fetch-gen": "./dist/cli.js"
+  },
+  "keywords": [
+    "openapi",
+    "typescript",
+    "api",
+    "client",
+    "generator",
+    "openapi-fetch"
+  ],
+  "author": "moznion",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "ts-morph": "^20.0.0",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.8.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "eslint": "^8.50.0",
+    "jest": "^29.7.0",
+    "openapi-fetch": "^0.8.1",
+    "ts-jest": "^29.1.1"
+  },
+  "peerDependencies": {
+    "openapi-fetch": ">=0.7.0"
+  }
+}
