@@ -48,8 +48,6 @@ interface EndpointInfo {
   commentLines: string[];
   paramsType: string | null;
   bodyType: string | null;
-  successResponseTypes: string[];
-  errorResponseTypes: string[];
 }
 
 function generateClientCode(
@@ -97,10 +95,7 @@ function extractEndpointsInfo(
         continue;
       }
 
-      // Get JSDoc comments if available
       const commentLines: string[] = [];
-      const successResponseTypes: string[] = [];
-      const errorResponseTypes: string[] = [];
       let paramsType: string | null = null;
       let requestBodyType: string | null = null;
 
@@ -140,36 +135,8 @@ function extractEndpointsInfo(
           const contentType = contentProp.getTypeAtLocation(decl);
           const contentTypeProps = contentType.getProperties();
 
-          if (contentTypeProps.length > 0) {
+          if (contentTypeProps.length > 0 && contentTypeProps[0]) {
             requestBodyType = contentTypeProps[0].getTypeAtLocation(decl).getText();
-          }
-        }
-      }
-
-      const responsesProp = decl.getType().getPropertyOrThrow("responses");
-      const responsesType = responsesProp.getTypeAtLocation(decl);
-      for (const status of responsesType.getProperties()) {
-        const statusCodeType = status.getTypeAtLocation(decl);
-
-        const contentProp = statusCodeType.getPropertyOrThrow("content");
-        const contentType = contentProp.getTypeAtLocation(decl);
-        const contentTypeProps = contentType.getProperties();
-
-        if (contentTypeProps.length > 0) {
-          const firstContentType = contentTypeProps[0];
-          const typ = firstContentType.getTypeAtLocation(decl);
-
-          const statusCode = Number.parseInt(status.getName(), 10);
-          if (statusCode >= 200 && statusCode < 300) {
-            const t = typ.getText();
-            if (t !== "") {
-              successResponseTypes.push(t);
-            }
-          } else if (statusCode >= 400) {
-            const t = typ.getText();
-            if (t !== "") {
-              errorResponseTypes.push(t);
-            }
           }
         }
       }
@@ -182,14 +149,6 @@ function extractEndpointsInfo(
             commentLines.push(`* ${description}`);
           }
         }
-      }
-
-      if (successResponseTypes.length <= 0) {
-        successResponseTypes.push("never");
-      }
-
-      if (errorResponseTypes.length <= 0) {
-        errorResponseTypes.push("never");
       }
 
       const sanitizedPath = path
@@ -218,8 +177,6 @@ function extractEndpointsInfo(
         commentLines,
         paramsType,
         bodyType: requestBodyType,
-        successResponseTypes,
-        errorResponseTypes,
       });
     }
   }
@@ -277,7 +234,7 @@ function generateClientClass(endpoints: EndpointInfo[]): string {
     }
 
     classCode.push(
-      `    ): Promise<{data: ${endpoint.successResponseTypes.join("|")}, error: ${endpoint.errorResponseTypes.join("|")}}> {`,
+      "    ) {"
     );
 
     // Method body
