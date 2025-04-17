@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { Command } from "commander";
 import { generateClient } from "./index";
+import { execSync } from "node:child_process";
 
 const program = new Command();
 
@@ -22,17 +23,6 @@ program
     "path to output generated client file",
     "./client.ts",
   )
-  .option("-p, --paths-type <name>", "paths interface type name", "paths")
-  .option(
-    "-c, --components-type <name>",
-    "components interface type name",
-    "components",
-  )
-  .option(
-    "-b, --base-url <url>",
-    "base URL for the API client",
-    "https://example.com/",
-  )
   .parse(process.argv);
 
 const options = program.opts();
@@ -46,14 +36,11 @@ try {
     process.exit(1);
   }
 
-  const clientCode = generateClient({
-    schemaPath: inputPath,
-    pathsTypeName: options.pathsType,
-    componentsTypeName: options.componentsType,
-    baseUrl: options.baseUrl,
-  });
+  const clientCode = generateClient(inputPath);
 
   fs.writeFileSync(outputPath, clientCode);
+  // FIXME: this should be in the generator side.
+  execSync(`npx biome check --write ${outputPath}`)
   console.log(`Successfully generated client at: ${outputPath}`);
 } catch (error) {
   console.error(
