@@ -1,4 +1,4 @@
-# openapi-fetch-gen
+# openapi-fetch-gen [![Run Tests](https://github.com/moznion/openapi-fetch-gen/actions/workflows/test.yml/badge.svg)](https://github.com/moznion/openapi-fetch-gen/actions/workflows/test.yml)
 
 Generate TypeScript API client from OpenAPI TypeScript interface definitions created by [openapi-typescript](https://github.com/openapi-ts/openapi-typescript).
 
