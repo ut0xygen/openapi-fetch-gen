@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
+import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "commander";
+import { version } from "../package.json";
 import { generateClient } from "./index";
-import { execSync } from "node:child_process";
-import { version } from '../package.json'
 
 const program = new Command();
 
@@ -29,8 +29,8 @@ program
 const options = program.opts();
 
 try {
-  const inputPath = path.resolve(options['input']);
-  const outputPath = path.resolve(options['output']);
+  const inputPath = path.resolve(options["input"]);
+  const outputPath = path.resolve(options["output"]);
 
   if (!fs.existsSync(inputPath)) {
     console.error(`Error: Input file not found: ${inputPath}`);
@@ -41,7 +41,7 @@ try {
 
   fs.writeFileSync(outputPath, clientCode);
   // FIXME: this should be in the generator side.
-  execSync(`npx biome check --write ${outputPath}`)
+  execSync(`npx biome check --write ${outputPath}`);
   console.log(`Successfully generated client at: ${outputPath}`);
 } catch (error) {
   console.error(
