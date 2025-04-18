@@ -11,6 +11,9 @@ importers:
       commander:
         specifier: ^13.1.0
         version: 13.1.0
+      tmp:
+        specifier: ^0.2.3
+        version: 0.2.3
       ts-morph:
         specifier: ^25.0.1
         version: 25.0.1
@@ -30,9 +33,6 @@ importers:
       openapi-typescript:
         specifier: ^7.6.1
         version: 7.6.1(typescript@5.8.3)
-      tmp:
-        specifier: ^0.2.3
-        version: 0.2.3
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
