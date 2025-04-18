@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 describe("integration test", () => {
   it("should generate client code correctly", () => {
     execSync("pnpm generate_test_resource", { stdio: "inherit" });
+    execSync("pnpm fix", { stdio: "inherit" });
 
     execSync("pnpm build", { stdio: "inherit" });
 

@@ -66,7 +66,7 @@ function generateClientCode(
     clientClass,
   ].join("\n");
 
-  const tempFile = tmp.fileSync({ postfix: '.ts' }).name;
+  const tempFile = tmp.fileSync({ postfix: ".ts" }).name;
   fs.writeFileSync(tempFile, code);
   execSync(`npx biome check --write ${tempFile}`);
   return fs.readFileSync(tempFile, "utf-8");
