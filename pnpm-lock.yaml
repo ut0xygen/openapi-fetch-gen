@@ -21,12 +21,18 @@ importers:
       '@types/node':
         specifier: ^22.14.1
         version: 22.14.1
+      '@types/tmp':
+        specifier: ^0.2.6
+        version: 0.2.6
       openapi-fetch:
         specifier: ^0.13.5
         version: 0.13.5
       openapi-typescript:
         specifier: ^7.6.1
         version: 7.6.1(typescript@5.8.3)
+      tmp:
+        specifier: ^0.2.3
+        version: 0.2.3
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -381,6 +387,9 @@ packages:
   '@types/node@22.14.1':
     resolution: {integrity: sha512-u0HuPQwe/dHrItgHHpmw3N2fYCR6x4ivMNbPHRkBVP4CvN+kiRrKHWk3i8tXiO/joPwXLMYvF9TTF0eqgHIuOw==}
 
+  '@types/tmp@0.2.6':
+    resolution: {integrity: sha512-chhaNf2oKHlRkDGt+tiKE2Z5aJ6qalm7Z9rlLdBwmOiAAf09YQvvoLXjWK4HWPF1xU/fqvMgfNfpVoBscA/tKA==}
+
   '@vitest/expect@3.1.1':
     resolution: {integrity: sha512-q/zjrW9lgynctNbwvFtQkGK9+vvHA5UzVi2V8APrp1C6fG6/MuYYkmlx4FubuqLycCeSdHD5aadWfua/Vr0EUA==}
 
@@ -685,6 +694,10 @@ packages:
   tinyspy@3.0.2:
     resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
+
+  tmp@0.2.3:
+    resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
+    engines: {node: '>=14.14'}
 
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
@@ -1022,6 +1035,8 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/tmp@0.2.6': {}
+
   '@vitest/expect@3.1.1':
     dependencies:
       '@vitest/spy': 3.1.1
@@ -1327,6 +1342,8 @@ snapshots:
   tinyrainbow@2.0.0: {}
 
   tinyspy@3.0.2: {}
+
+  tmp@0.2.3: {}
 
   to-regex-range@5.0.1:
     dependencies:

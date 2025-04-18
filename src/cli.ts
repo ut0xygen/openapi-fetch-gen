@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { Command } from "commander";
@@ -40,8 +39,6 @@ try {
   const clientCode = generateClient(inputPath);
 
   fs.writeFileSync(outputPath, clientCode);
-  // FIXME: this should be in the generator side.
-  execSync(`npx biome check --write ${outputPath}`);
   console.log(`Successfully generated client at: ${outputPath}`);
 } catch (error) {
   console.error(
