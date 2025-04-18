@@ -5,6 +5,7 @@ import path from "node:path";
 import { Command } from "commander";
 import { generateClient } from "./index";
 import { execSync } from "node:child_process";
+import { version } from '../package.json'
 
 const program = new Command();
 
@@ -13,7 +14,7 @@ program
   .description(
     "Generate TypeScript API client from OpenAPI TypeScript definitions",
   )
-  .version("0.1.0")
+  .version(version)
   .requiredOption(
     "-i, --input <path>",
     "path to input OpenAPI TypeScript definition file",
