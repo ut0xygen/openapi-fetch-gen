@@ -1,27 +1,4 @@
-# Dependency directories
 node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-
-# Build artifacts
 dist/
-lib/
-build/
+src/test_resources/generated_client.ts
 
-# Coverage output
-coverage/
-
-# IDE files
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS specific
-.DS_Store
-Thumbs.db
-
-# Generated examples
-examples/*-client.ts
-examples/*-client-cli.ts

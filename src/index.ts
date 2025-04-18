@@ -26,11 +26,6 @@ export function generateClient(schemaFilePath: string): string {
     throw new Error(`Interface "paths" not found in ${schemaFilePath}`);
   }
 
-  const operationsInterface = findInterface(schemaFile, "operations");
-  if (!operationsInterface) {
-    throw new Error(`Interface "operations" not found in ${schemaFilePath}`);
-  }
-
   return generateClientCode(pathsInterface, path.basename(schemaFilePath));
 }
 

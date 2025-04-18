@@ -8,13 +8,13 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rm -f ./dist/*",
+    "clean": "rm -rf ./dist/*",
     "build": "pnpm clean && tsc",
     "lint": "biome check src",
     "fix": "biome check --write src",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "generate_test_resource": "openapi-typescript -o ./src/test_resources/schema.d.ts ./src/test_resources/schema.yaml"
   },
   "bin": {
     "openapi-fetch-gen": "./dist/cli.js"
@@ -45,7 +45,6 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.14.1",
-    "@vitest/coverage-v8": "^3.1.1",
     "openapi-fetch": "^0.13.5",
     "openapi-typescript": "^7.6.1",
     "typescript": "^5.8.3",
