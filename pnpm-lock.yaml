@@ -14,9 +14,6 @@ importers:
       ts-morph:
         specifier: ^25.0.1
         version: 25.0.1
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -30,6 +27,9 @@ importers:
       openapi-fetch:
         specifier: ^0.13.5
         version: 0.13.5
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
       vitest:
         specifier: ^3.1.1
         version: 3.1.1(@types/node@22.14.1)

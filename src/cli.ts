@@ -28,8 +28,8 @@ program
 const options = program.opts();
 
 try {
-  const inputPath = path.resolve(options.input);
-  const outputPath = path.resolve(options.output);
+  const inputPath = path.resolve(options['input']);
+  const outputPath = path.resolve(options['output']);
 
   if (!fs.existsSync(inputPath)) {
     console.error(`Error: Input file not found: ${inputPath}`);

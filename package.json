@@ -2,14 +2,14 @@
   "name": "@moznion/openapi-fetch-gen",
   "version": "0.0.1",
   "description": "Generate TypeScript API client from OpenAPI TypeScript interface definitions created by openapi-typescript",
-  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "clean": "rm -f ./dist/*",
+    "build": "pnpm clean && tsc",
     "lint": "biome check src",
     "fix": "biome check --write src",
     "test": "vitest run",
@@ -29,13 +29,21 @@
     "openapi-fetch"
   ],
   "author": "moznion",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moznion/openapi-fetch-gen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moznion/openapi-fetch-gen/issues"
+  },
+  "homepage": "https://github.com/moznion/openapi-fetch-gen#readme",
   "license": "MIT",
   "dependencies": {
     "commander": "^13.1.0",
-    "ts-morph": "^25.0.1",
-    "typescript": "^5.8.3"
+    "ts-morph": "^25.0.1"
   },
   "devDependencies": {
+    "typescript": "^5.8.3",
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^22.14.1",
     "@vitest/coverage-v8": "^3.1.1",
