@@ -67,7 +67,7 @@ function generateClientCode(
 
   const defaultHeaderType =
     defaultHeaderNames.length > 0
-      ? `type DefaultHeader = Record<${defaultHeaderNames.map((n) => `"${n}"`).join("|")}, string>\n`
+      ? `type DefaultHeaders = Record<${defaultHeaderNames.map((n) => `"${n}"`).join("|")}, string>\n`
       : "";
   const clientClass = generateClientClass(endpoints, defaultHeaderExists);
 
@@ -154,14 +154,14 @@ function extractEndpointsInfo(
           .map((kv) => `${kv.name}: ${kv.text}`)
           .join("\n");
 
-        paramsType = `keyof Omit<${headerType["text"]}, keyof DefaultHeader> extends never ?
+        paramsType = `keyof Omit<${headerType["text"]}, keyof DefaultHeaders> extends never ?
   {
     header?: ${headerType["text"]},
     ${nonHeaderParams}
   } :
   {
     header:
-      | Omit<${headerType["text"]}, keyof DefaultHeader>
+      | Omit<${headerType["text"]}, keyof DefaultHeaders>
       | ${headerType["text"]},
     ${nonHeaderParams}
 }
@@ -242,9 +242,9 @@ function generateClientClass(
   const classCode = [
     `export class Client {
        private readonly client;
-       ${defaultHeaderExists ? "private readonly defaultHeaders: DefaultHeader;" : ""}
+       ${defaultHeaderExists ? "private readonly defaultHeaders: DefaultHeaders;" : ""}
 
-       constructor(clientOptions: ClientOptions${defaultHeaderExists ? ", defaultHeaders: DefaultHeader" : ""}) {
+       constructor(clientOptions: ClientOptions${defaultHeaderExists ? ", defaultHeaders: DefaultHeaders" : ""}) {
          this.client = createClient<paths>(clientOptions);
          ${defaultHeaderExists ? "this.defaultHeaders = defaultHeaders;" : ""}
        }

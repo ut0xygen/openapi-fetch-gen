@@ -395,7 +395,7 @@ export interface paths {
         /** @description Authorization Header */
         Authorization: string;
         /** @description Application version */
-        "Application-Verion": string;
+        "Application-Version": string;
         /** @description Identifier of something */
         "Something-Id": string;
       };
@@ -416,7 +416,7 @@ export interface paths {
           /** @description Authorization Header */
           Authorization: string;
           /** @description Application version */
-          "Application-Verion": string;
+          "Application-Version": string;
           /** @description Identifier of something */
           "Something-Id": string;
         };

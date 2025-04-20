@@ -32,7 +32,7 @@ describe("integration test", () => {
 
   it("should generate client code with default-headers correctly", () => {
     execSync(
-      "node ./dist/cli.js --input ./src/test_resources/schema.d.ts --output ./src/test_resources/generated_client_with_default_headers.ts --default-headers 'Authorization, Application-Verion'",
+      "node ./dist/cli.js --input ./src/test_resources/schema.d.ts --output ./src/test_resources/generated_client_with_default_headers.ts --default-headers 'Authorization, Application-Version'",
       { stdio: "inherit" },
     );
     execSync("pnpm build", { stdio: "inherit" });

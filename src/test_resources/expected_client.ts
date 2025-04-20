@@ -147,7 +147,7 @@ export class Client {
   async getUsersBulkJobid(params: {
     header: {
       Authorization: string;
-      "Application-Verion": string;
+      "Application-Version": string;
       "Something-Id": string;
     };
     path: { jobId: string };
