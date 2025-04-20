@@ -1,20 +1,20 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 describe("integration test", () => {
-  it("should generate client code correctly", () => {
+  beforeAll(() => {
     execSync("pnpm generate_test_resource", { stdio: "inherit" });
     execSync("pnpm fix", { stdio: "inherit" });
-
     execSync("pnpm build", { stdio: "inherit" });
+  });
 
+  it("should generate client code correctly", () => {
     execSync(
       "node ./dist/cli.js --input ./src/test_resources/schema.d.ts --output ./src/test_resources/generated_client.ts",
       { stdio: "inherit" },
     );
-
     execSync("pnpm build", { stdio: "inherit" });
 
     const generatedPath = path.resolve(
@@ -28,5 +28,25 @@ describe("integration test", () => {
     const expectedContent = fs.readFileSync(expectedPath, "utf8");
 
     expect(generatedContent).toBe(expectedContent);
-  }, 10000);
+  }, 30000);
+
+  it("should generate client code with default-headers correctly", () => {
+    execSync(
+      "node ./dist/cli.js --input ./src/test_resources/schema.d.ts --output ./src/test_resources/generated_client_with_default_headers.ts --default-headers 'Authorization, Application-Verion'",
+      { stdio: "inherit" },
+    );
+    execSync("pnpm build", { stdio: "inherit" });
+
+    const generatedPath = path.resolve(
+      "./src/test_resources/generated_client_with_default_headers.ts",
+    );
+    const expectedPath = path.resolve(
+      "./src/test_resources/expected_client_with_default_headers.ts",
+    );
+
+    const generatedContent = fs.readFileSync(generatedPath, "utf8");
+    const expectedContent = fs.readFileSync(expectedPath, "utf8");
+
+    expect(generatedContent).toBe(expectedContent);
+  }, 30000);
 });

@@ -391,7 +391,14 @@ export interface paths {
   "/users/bulk/{jobId}": {
     parameters: {
       query?: never;
-      header?: never;
+      header: {
+        /** @description Authorization Header */
+        Authorization: string;
+        /** @description Application version */
+        "Application-Verion": string;
+        /** @description Identifier of something */
+        "Something-Id": string;
+      };
       path: {
         /** @description Bulk import job identifier */
         jobId: string;
@@ -405,7 +412,14 @@ export interface paths {
     get: {
       parameters: {
         query?: never;
-        header?: never;
+        header: {
+          /** @description Authorization Header */
+          Authorization: string;
+          /** @description Application version */
+          "Application-Verion": string;
+          /** @description Identifier of something */
+          "Something-Id": string;
+        };
         path: {
           /** @description Bulk import job identifier */
           jobId: string;
