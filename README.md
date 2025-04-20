@@ -177,13 +177,13 @@ That signature means you can:
 - **Omit** the defaulted headers and only pass additional ones (here, `Something-Id`):
 
 ```typescript
-client.getUsersBulkJobid({header: {"something-Id": "foobar"}, path: {jobId: "123"}});
+client.getUsersBulkJobid({header: {"Something-Id": "foobar"}, path: {jobId: "123"}});
 ```
 
 - **Override** all headers, including the defaults:
 
 ```typescript
-client.getUsersBulkJobid({header: {"Authorization": "foo", "Application-Version": "bar", "something-Id": "foobar"}, path: {jobId: "123"}});
+client.getUsersBulkJobid({header: {"Authorization": "foo", "Application-Version": "bar", "Something-Id": "foobar"}, path: {jobId: "123"}});
 ```
 
 If your default headers cover **all** required headers for the endpoint (e.g. `--default-headers 'Authorization, Application-Version, Something-Id'`), you can omit the `header` parameter entirely:
