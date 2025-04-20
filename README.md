@@ -192,6 +192,10 @@ If your default headers cover **all** required headers for the endpoint (e.g. `-
 client.getUsersBulkJobid({path: {jobId: "123"}});
 ```
 
+## Articles
+
+- [openapi-fetch-gen – Generate TypeScript API client from OpenAPI TypeScript interface definitions created by openapi-typescript - DEV Community](https://dev.to/moznion/openapi-fetch-gen-generate-typescript-api-client-from-openapi-typescript-interface-definitions-kjd)
+
 ## License
 
 MIT
