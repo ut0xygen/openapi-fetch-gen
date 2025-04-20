@@ -252,6 +252,24 @@ paths:
         schema:
           type: string
         description: Bulk import job identifier
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+        description: Authorization Header
+      - name: Application-Version
+        in: header
+        required: true
+        schema:
+          type: string
+        description: Application version
+      - name: Something-Id
+        in: header
+        required: true
+        schema:
+          type: string
+        description: Identifier of something
     get:
       summary: Get bulk job status
       description: Retrieve the status of a bulk import job.

@@ -23,6 +23,11 @@ program
     "path to output generated client file",
     "./client.ts",
   )
+  .option(
+    "--default-headers <comma_separated_names_of_headers>",
+    "header names so that the generated client includes the default HTTP headers across all endpoints",
+    "",
+  )
   .parse(process.argv);
 
 const options = program.opts();
@@ -30,13 +35,19 @@ const options = program.opts();
 try {
   const inputPath = path.resolve(options["input"]);
   const outputPath = path.resolve(options["output"]);
+  const defaultHeaderNamesString = options["defaultHeaders"] as string;
 
   if (!fs.existsSync(inputPath)) {
     console.error(`Error: Input file not found: ${inputPath}`);
     process.exit(1);
   }
 
-  const clientCode = generateClient(inputPath);
+  const defaultHeaderNames = defaultHeaderNamesString
+    .split(",")
+    .map((h) => h.trim())
+    .filter((h) => h !== "");
+
+  const clientCode = generateClient(inputPath, defaultHeaderNames);
 
   fs.writeFileSync(outputPath, clientCode);
   console.log(`Successfully generated client at: ${outputPath}`);

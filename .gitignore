@@ -1,4 +1,4 @@
 node_modules/
 dist/
-src/test_resources/generated_client.ts
+src/test_resources/generated_client*.ts
 

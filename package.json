@@ -17,8 +17,9 @@
     "build": "pnpm clean && tsc",
     "lint": "biome check src",
     "fix": "biome check --write src",
-    "test": "vitest run",
+    "test": "pnpm test:clean && vitest run",
     "test:watch": "vitest",
+    "test:clean": "rm -f ./src/test_resources/generated_client*",
     "generate_test_resource": "openapi-typescript -o ./src/test_resources/schema.d.ts ./src/test_resources/schema.yaml"
   },
   "bin": {
