@@ -67,30 +67,29 @@ async function doSomething() {
 
 ### Default HTTP Headers
 
-This tool provides a `--default-headers` CLI option to configure the generated client to use default HTTP headers.
+Generated clients support a generic type for default HTTP headers.
 
-For example, when you specify:
-
-```bash
-npx openapi-fetch-gen \
-  --input ./schema.d.ts \
-  --output ./client.ts \
-  --default-headers "Authorization, Application-Version"
-```
-
-the `Client` constructor accepts those default values:
+Example:
 
 ```typescript
-type DefaultHeaders = Record<'Authorization' | 'Application-Version', string>;
-
-export class Client {
-  constructor(clientOptions: ClientOptions, defaultHeaders: DefaultHeaders) { ... }
+export class Client<HT extends Record<string, string>> {
+  constructor(clientOptions: ClientOptions, defaultHeaders?: HT) {
+    this.client = createClient<paths>(clientOptions);
+    this.defaultHeaders = defaultHeaders ?? ({} as HT);
+  }
+  ...
 }
 ```
 
-Endpoint methods that require those headers no longer need the default values to be passed explicitly.
+You can create a client instance with default headers like this:
 
-For example, given this schema:
+```typescript
+new Client({}, {"Authorization": "Bearer your-token", "Application-Version": "1.0.0"});
+```
+
+With this setup, endpoint methods that require these headers no longer need them to be explicitly passed each time.
+
+For example, given the following schema:
 
 ```typescript
 "/users/bulk/{jobId}": {
@@ -113,35 +112,29 @@ For example, given this schema:
     };
 ```
 
-When `--default-headers` is not specified, the generated client method looks like this:
-
-```typescript
-async getUsersBulkJobid(params: {
-  header: {
-    Authorization: string;
-    "Application-Version": string;
-    "Something-Id": string;
-  };
-  path: { jobId: string };
-}) {
-  ...
-}
-```
-
-This requires you to pass all header values explicitly.
-
-When you do specify `--default-headers`, the signature becomes:
+This tool generates an endpoint method using a type-level trick like this:
 
 ```typescript
 async getUsersBulkJobid(
-  params: keyof Omit<
-    {
-      Authorization: string;
-      "Application-Version": string;
-      "Something-Id": string;
-    },
-    keyof DefaultHeaders
-  > extends never
+  params: [
+    Exclude<
+      // Missed Header Keys for default headers
+      keyof {
+        Authorization: string;
+        "Application-Version": string;
+        "Something-Id": string;
+      },
+      Extract<
+        // Provided header keys by default headers' keys
+        keyof HT,
+        keyof {
+          Authorization: string;
+          "Application-Version": string;
+          "Something-Id": string;
+        }
+      >
+    >,
+  ] extends [never]
     ? {
         header?: {
           Authorization: string;
@@ -152,14 +145,46 @@ async getUsersBulkJobid(
       }
     : {
         header:
-          | Omit<
+          | (Pick<
+              // Pick the header keys that are not in the default headers
               {
                 Authorization: string;
                 "Application-Version": string;
                 "Something-Id": string;
               },
-              keyof DefaultHeaders
-            >
+              Exclude<
+                // Missed Header Keys for default headers
+                keyof {
+                  Authorization: string;
+                  "Application-Version": string;
+                  "Something-Id": string;
+                },
+                Extract<
+                  // Provided header keys by default headers' keys
+                  keyof HT,
+                  keyof {
+                    Authorization: string;
+                    "Application-Version": string;
+                    "Something-Id": string;
+                  }
+                >
+              >
+            > &
+              Partial<
+                // Disallow default headers' keys to be in the header param
+                Record<
+                  Extract<
+                    // Provided header keys by default headers' keys
+                    keyof HT,
+                    keyof {
+                      Authorization: string;
+                      "Application-Version": string;
+                      "Something-Id": string;
+                    }
+                  >,
+                  never
+                >
+              >)
           | {
               Authorization: string;
               "Application-Version": string;
@@ -168,11 +193,20 @@ async getUsersBulkJobid(
         path: { jobId: string };
       },
 ) {
-  ...
+  return await this.client.GET("/users/bulk/{jobId}", {
+    params: {
+      ...params,
+      header: { ...this.defaultHeaders, ...params.header } as {
+        Authorization: string;
+        "Application-Version": string;
+        "Something-Id": string;
+      },
+    },
+  });
 }
 ```
 
-That signature means you can:
+This signature allows you to:
 
 - **Omit** the defaulted headers and only pass additional ones (here, `Something-Id`):
 
@@ -186,7 +220,7 @@ client.getUsersBulkJobid({header: {"Something-Id": "foobar"}, path: {jobId: "123
 client.getUsersBulkJobid({header: {"Authorization": "foo", "Application-Version": "bar", "Something-Id": "foobar"}, path: {jobId: "123"}});
 ```
 
-If your default headers cover **all** required headers for the endpoint (e.g. `--default-headers 'Authorization, Application-Version, Something-Id'`), you can omit the `header` parameter entirely:
+If your default headers already include **all** required headers for the endpoint (e.g. `{"Authorization": "Bearer your-token", "Application-Version": "1.0.0", "Something-Id": "123"}` as the second constructor argument), you can omit the `header` parameter entirely:
 
 ```typescript
 client.getUsersBulkJobid({path: {jobId: "123"}});
