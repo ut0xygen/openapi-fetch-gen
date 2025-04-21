@@ -31,11 +31,10 @@ npx openapi-fetch-gen --input ./schema.d.ts --output ./client.ts
 Options:
 
 ```
-  -V, --version                                         output the version number
-  -i, --input <path>                                    path to input OpenAPI TypeScript definition file
-  -o, --output <path>                                   path to output generated client file (default: "./client.ts")
-  --default-headers <comma_separated_names_of_headers>  header names so that the generated client includes the default HTTP headers across all endpoints (default: "")
-  -h, --help                                            display help for command
+  -V, --version        output the version number
+  -i, --input <path>   path to input OpenAPI TypeScript definition file
+  -o, --output <path>  path to output generated client file (default: "./client.ts")
+  -h, --help           display help for command
 ```
 
 ### Example
