@@ -7,6 +7,7 @@
   "files": [
     "dist/*.js",
     "dist/*.js.map",
+    "dist/*.ts.map",
     "dist/*.d.ts",
     "LICENSE",
     "README.md",
