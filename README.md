@@ -225,6 +225,13 @@ If your default headers already include **all** required headers for the endpoin
 client.getUsersBulkJobid({path: {jobId: "123"}});
 ```
 
+NOTE:
+
+In this context, the "default HTTP headers" are different from the headers in `ClientOptions`.
+The headers in `ClientOptions` are always sent implicitly, regardless of the header parameters specified in endpoint methods.
+In contrast, the "default HTTP headers" mechanism is intended to reduce the need to repeatedly specify common header parameters
+in each endpoint method when their values are already known.
+
 ## Articles
 
 - [openapi-fetch-gen – Generate TypeScript API client from OpenAPI TypeScript interface definitions created by openapi-typescript - DEV Community](https://dev.to/moznion/openapi-fetch-gen-generate-typescript-api-client-from-openapi-typescript-interface-definitions-kjd)
