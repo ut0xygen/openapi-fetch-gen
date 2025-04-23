@@ -28,6 +28,8 @@ program
 const options = program.opts();
 
 try {
+  const start = new Date().getTime() / 1000.0;
+
   const inputPath = path.resolve(options["input"]);
   const outputPath = path.resolve(options["output"]);
 
@@ -39,7 +41,12 @@ try {
   const clientCode = generateClient(inputPath);
 
   fs.writeFileSync(outputPath, clientCode);
-  console.log(`🏁 Successfully generated client at: ${outputPath}`);
+
+  const end = new Date().getTime() / 1000.0;
+
+  console.log(
+    `🏁 Successfully generated client at [${(end - start).toFixed(2)}ms]: ${outputPath}`,
+  );
 } catch (error) {
   console.error(
     "😵 Error:",
