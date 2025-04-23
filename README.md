@@ -229,6 +229,14 @@ client.getUsersBulkJobid({path: {jobId: "123"}});
 
 - [openapi-fetch-gen – Generate TypeScript API client from OpenAPI TypeScript interface definitions created by openapi-typescript - DEV Community](https://dev.to/moznion/openapi-fetch-gen-generate-typescript-api-client-from-openapi-typescript-interface-definitions-kjd)
 
+## For developers
+
+### How to publish this packages
+
+```
+$ pnpm ship
+```
+
 ## License
 
 MIT
