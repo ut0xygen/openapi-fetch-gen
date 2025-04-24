@@ -528,6 +528,9 @@ export interface components {
       processed: number;
       total: number;
     };
+    Client: {
+      id?: string;
+    };
   };
   responses: {
     /** @description Bad request due to invalid input */
