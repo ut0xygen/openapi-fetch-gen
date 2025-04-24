@@ -531,6 +531,9 @@ export interface components {
     Client: {
       id?: string;
     };
+    "schema-Something": {
+      id?: string;
+    };
   };
   responses: {
     /** @description Bad request due to invalid input */

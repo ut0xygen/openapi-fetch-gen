@@ -92,8 +92,9 @@ function generateSchemaTypes(
     for (const schema of schemasType.getProperties()) {
       const schemaType = schema.getValueDeclaration()?.getType();
       if (schemaType) {
-        const schemaName =
-          schema.getName() === "Client" ? "ClientSchema" : schema.getName();
+        const schemaName = (
+          schema.getName() === "Client" ? "ClientSchema" : schema.getName()
+        ).replaceAll(/-/g, "_");
         types.push(`export type ${schemaName} = ${schemaType.getText()};`);
       }
     }

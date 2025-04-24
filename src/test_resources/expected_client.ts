@@ -335,3 +335,4 @@ export type BulkJobStatus = {
   total: number;
 };
 export type ClientSchema = { id?: string };
+export type schema_Something = { id?: string };
