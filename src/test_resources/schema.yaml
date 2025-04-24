@@ -522,3 +522,11 @@ components:
         - status
         - processed
         - total
+
+    # this is dummy schema to check name confliction
+    Client:
+      type: object
+      properties:
+        id:
+          type: string
+

@@ -236,3 +236,102 @@ export class Client<HT extends Record<string, string>> {
     });
   }
 }
+
+export type Error = { code: number; message: string };
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  membershipType: "REGULAR" | "PREMIUM" | "STUDENT";
+  registeredAt: string;
+  address?: {
+    postalCode?: string;
+    street: string;
+    city: string;
+    country: string;
+  };
+};
+export type Address = {
+  postalCode?: string;
+  street: string;
+  city: string;
+  country: string;
+};
+export type UserCreate = {
+  name: string;
+  email: string;
+  membershipType: "REGULAR" | "PREMIUM" | "STUDENT";
+  address?: {
+    postalCode?: string;
+    street: string;
+    city: string;
+    country: string;
+  };
+};
+export type UserUpdate = {
+  name: string;
+  email: string;
+  membershipType: "REGULAR" | "PREMIUM" | "STUDENT";
+  address?: {
+    postalCode?: string;
+    street: string;
+    city: string;
+    country: string;
+  };
+} & { id: string };
+export type UserPatch = {
+  name?: string;
+  email?: string;
+  membershipType?: "REGULAR" | "PREMIUM" | "STUDENT";
+  address?: {
+    postalCode?: string;
+    street: string;
+    city: string;
+    country: string;
+  };
+};
+export type UserList = {
+  id: string;
+  name: string;
+  email: string;
+  membershipType: "REGULAR" | "PREMIUM" | "STUDENT";
+  registeredAt: string;
+  address?: {
+    postalCode?: string;
+    street: string;
+    city: string;
+    country: string;
+  };
+}[];
+export type UserPage = {
+  total: number;
+  page: number;
+  pageSize: number;
+  items: {
+    id: string;
+    name: string;
+    email: string;
+    membershipType: "REGULAR" | "PREMIUM" | "STUDENT";
+    registeredAt: string;
+    address?: {
+      postalCode?: string;
+      street: string;
+      city: string;
+      country: string;
+    };
+  }[];
+};
+export type Loan = {
+  loanId: string;
+  book: { isbn: string; title: string; author: string };
+  borrowedAt: string;
+  dueAt: string;
+};
+export type Book = { isbn: string; title: string; author: string };
+export type BulkJobStatus = {
+  jobId: string;
+  status: "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED";
+  processed: number;
+  total: number;
+};
+export type ClientSchema = { id?: string };
