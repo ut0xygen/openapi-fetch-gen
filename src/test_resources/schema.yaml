@@ -530,3 +530,10 @@ components:
         id:
           type: string
 
+    # this is dummy schema to check hyphen replacement
+    schema-Something:
+      type: object
+      properties:
+        id:
+          type: string
+
