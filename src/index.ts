@@ -176,6 +176,9 @@ function extractEndpointsInfo(
       };
 
       operationId = extractOperationId();
+      if (operationId !== null) {
+        operationId = sanitizeForOperation(operationId);
+      }
 
       const paramProp = decl.getType().getPropertyOrThrow("parameters");
       const paramTypes = paramProp
@@ -275,10 +278,7 @@ function extractEndpointsInfo(
         }
       }
 
-      const sanitizedPath = path
-        .replace(/[{}]/g, "")
-        .replace(/[-/.]/g, "_")
-        .replace(/^_/, ""); // Remove leading underscore if present
+      const sanitizedPath = sanitizeForOperation(path);
 
       // Generate a camelCase operation name
       const pathSegments = sanitizedPath.split("_");
@@ -402,4 +402,11 @@ function generateClientClass(
   classCode.push("");
 
   return classCode.join("\n");
+}
+
+function sanitizeForOperation(operation: string): string {
+  return operation
+    .replace(/[{}]/g, "")
+    .replace(/[-/.]/g, "_")
+    .replace(/^_/, ""); // Remove leading underscore if present
 }
