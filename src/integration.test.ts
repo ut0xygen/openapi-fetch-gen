@@ -29,4 +29,24 @@ describe("integration test", () => {
 
     expect(generatedContent).toBe(expectedContent);
   }, 30000);
+
+  it("should generate client code correctly", () => {
+    execSync(
+      "node ./dist/cli.js --input ./src/test_resources/schema.d.ts --output ./src/test_resources/generated_client.ts --use-operation-id",
+      { stdio: "inherit" },
+    );
+    execSync("pnpm build", { stdio: "inherit" });
+
+    const generatedPath = path.resolve(
+      "./src/test_resources/generated_client.ts",
+    );
+    const expectedPath = path.resolve(
+      "./src/test_resources/expected_client_with_operation_id.ts",
+    );
+
+    const generatedContent = fs.readFileSync(generatedPath, "utf8");
+    const expectedContent = fs.readFileSync(expectedPath, "utf8");
+
+    expect(generatedContent).toBe(expectedContent);
+  }, 30000);
 });
