@@ -145,7 +145,6 @@ function extractEndpointsInfo(
       const commentLines: string[] = [];
       let paramsType: string | null = null;
       let requestBodyType: string | null = null;
-      let operationId: string | null = null;
 
       const declarations = methodProperty.getDeclarations();
       if (declarations.length <= 0) {
@@ -159,7 +158,7 @@ function extractEndpointsInfo(
 
       const typeNode = decl.getTypeNodeOrThrow();
 
-      const extractOperationId = (): string | null => {
+      const operationId = (() => {
         if (
           Node.isIndexedAccessTypeNode(typeNode) &&
           typeNode.getObjectTypeNode().getText() === "operations"
@@ -169,16 +168,13 @@ function extractEndpointsInfo(
             Node.isLiteralTypeNode(indexTypeNode) &&
             indexTypeNode.getLiteral().getKind() === SyntaxKind.StringLiteral
           ) {
-            return indexTypeNode.getLiteral().getText().slice(1, -1);
+            return sanitizeForOperation(
+              indexTypeNode.getLiteral().getText().slice(1, -1),
+            );
           }
         }
         return null;
-      };
-
-      operationId = extractOperationId();
-      if (operationId !== null) {
-        operationId = sanitizeForOperation(operationId);
-      }
+      })();
 
       const paramProp = decl.getType().getPropertyOrThrow("parameters");
       const paramTypes = paramProp
@@ -338,11 +334,8 @@ function generateClientClass(
       bodyType,
     } = endpoint;
 
-    // Determine which operation name to use
-    let methodName = operationName;
-    if (options.useOperationId && operationId) {
-      methodName = operationId;
-    }
+    const methodName =
+      options.useOperationId && operationId ? operationId : operationName;
 
     // Add JSDoc comment if available
     if (commentLines.length > 0) {
