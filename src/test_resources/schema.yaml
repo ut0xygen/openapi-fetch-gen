@@ -13,6 +13,7 @@ paths:
     get:
       summary: List users
       description: Retrieve all users with pagination.
+      operationId: listUsers
       parameters:
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
@@ -39,6 +40,7 @@ paths:
     post:
       summary: Create a new user
       description: Register a new library user.
+      operationId: createUser
       requestBody:
         required: true
         content:
@@ -67,6 +69,7 @@ paths:
     get:
       summary: Get user details
       description: Retrieve detailed information for a specific user.
+      operationId: getUserDetails
       responses:
         '200':
           description: User details
@@ -86,6 +89,7 @@ paths:
     put:
       summary: Replace user
       description: Replace a user's entire record.
+      operationId: replaceUser
       requestBody:
         required: true
         content:
@@ -111,6 +115,7 @@ paths:
     patch:
       summary: Update user fields
       description: Partially update a user's information.
+      operationId: updateUserFields
       requestBody:
         required: true
         content:
@@ -136,6 +141,7 @@ paths:
     delete:
       summary: Delete user
       description: Soft-delete a user record.
+      operationId: deleteUser
       responses:
         '204':
           description: User deleted (no content)
@@ -154,6 +160,7 @@ paths:
     get:
       summary: List user loans
       description: Retrieve current loans for a specific user.
+      operationId: listUserLoans
       responses:
         '200':
           description: List of loans
@@ -176,6 +183,7 @@ paths:
     post:
       summary: Search users
       description: Search for users by multiple criteria.
+      operationId: searchUsers
       requestBody:
         required: true
         content:
@@ -218,6 +226,7 @@ paths:
     post:
       summary: Bulk user import
       description: Upload a CSV file to register multiple users at once.
+      operationId: _bulk-{User}.Imp/ort # contains noises
       requestBody:
         required: true
         content:
@@ -272,6 +281,8 @@ paths:
         description: Identifier of something
     get:
       summary: Get bulk job status
+      # Note
+      # intentionally, "operationId" doesn't exist here.
       description: Retrieve the status of a bulk import job.
       responses:
         '200':

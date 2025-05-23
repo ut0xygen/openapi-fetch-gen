@@ -15,69 +15,13 @@ export interface paths {
      * List users
      * @description Retrieve all users with pagination.
      */
-    get: {
-      parameters: {
-        query?: {
-          /** @description Page number (starting at 1) */
-          page?: components["parameters"]["page"];
-          /** @description Number of items per page */
-          pageSize?: components["parameters"]["pageSize"];
-          /** @description Filter by membership type */
-          membershipType?: "REGULAR" | "PREMIUM" | "STUDENT";
-        };
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description A paginated list of users */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["UserPage"];
-          };
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-      };
-    };
+    get: operations["listUsers"];
     put?: never;
     /**
      * Create a new user
      * @description Register a new library user.
      */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserCreate"];
-        };
-      };
-      responses: {
-        /** @description User created successfully */
-        201: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["User"];
-          };
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-        409: components["responses"]["Conflict"];
-      };
-    };
+    post: operations["createUser"];
     delete?: never;
     options?: never;
     head?: never;
@@ -98,135 +42,25 @@ export interface paths {
      * Get user details
      * @description Retrieve detailed information for a specific user.
      */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          /** @description Unique user identifier (UUID) */
-          userId: components["parameters"]["userId"];
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description User details */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["User"];
-          };
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-        404: components["responses"]["NotFound"];
-      };
-    };
+    get: operations["getUserDetails"];
     /**
      * Replace user
      * @description Replace a user's entire record.
      */
-    put: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          /** @description Unique user identifier (UUID) */
-          userId: components["parameters"]["userId"];
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserUpdate"];
-        };
-      };
-      responses: {
-        /** @description Updated user record */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["User"];
-          };
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-        404: components["responses"]["NotFound"];
-      };
-    };
+    put: operations["replaceUser"];
     post?: never;
     /**
      * Delete user
      * @description Soft-delete a user record.
      */
-    delete: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          /** @description Unique user identifier (UUID) */
-          userId: components["parameters"]["userId"];
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description User deleted (no content) */
-        204: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content?: never;
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-        404: components["responses"]["NotFound"];
-      };
-    };
+    delete: operations["deleteUser"];
     options?: never;
     head?: never;
     /**
      * Update user fields
      * @description Partially update a user's information.
      */
-    patch: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          /** @description Unique user identifier (UUID) */
-          userId: components["parameters"]["userId"];
-        };
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["UserPatch"];
-        };
-      };
-      responses: {
-        /** @description Updated user record */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["User"];
-          };
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-        404: components["responses"]["NotFound"];
-      };
-    };
+    patch: operations["updateUserFields"];
     trace?: never;
   };
   "/users/{userId}/loans": {
@@ -243,33 +77,7 @@ export interface paths {
      * List user loans
      * @description Retrieve current loans for a specific user.
      */
-    get: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path: {
-          /** @description Unique user identifier (UUID) */
-          userId: components["parameters"]["userId"];
-        };
-        cookie?: never;
-      };
-      requestBody?: never;
-      responses: {
-        /** @description List of loans */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["Loan"][];
-          };
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-        404: components["responses"]["NotFound"];
-      };
-    };
+    get: operations["listUserLoans"];
     put?: never;
     post?: never;
     delete?: never;
@@ -291,45 +99,7 @@ export interface paths {
      * Search users
      * @description Search for users by multiple criteria.
      */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "application/json": {
-            /** @description Partial match on user name */
-            name?: string;
-            /** Format: email */
-            email?: string;
-            /**
-             * Format: date
-             * @description Users who joined after this date
-             */
-            joinedAfter?: string;
-            /** @enum {string} */
-            membershipType?: "REGULAR" | "PREMIUM" | "STUDENT";
-          };
-        };
-      };
-      responses: {
-        /** @description Matching users */
-        200: {
-          headers: {
-            [name: string]: unknown;
-          };
-          content: {
-            "application/json": components["schemas"]["UserList"];
-          };
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-      };
-    };
+    post: operations["searchUsers"];
     delete?: never;
     options?: never;
     head?: never;
@@ -349,39 +119,7 @@ export interface paths {
      * Bulk user import
      * @description Upload a CSV file to register multiple users at once.
      */
-    post: {
-      parameters: {
-        query?: never;
-        header?: never;
-        path?: never;
-        cookie?: never;
-      };
-      requestBody: {
-        content: {
-          "multipart/form-data": {
-            /**
-             * Format: binary
-             * @description CSV file (headers: name,email,membershipType,registeredAt)
-             */
-            file?: string;
-          };
-        };
-      };
-      responses: {
-        /** @description Bulk import accepted */
-        202: {
-          headers: {
-            /** @description URL to check bulk job status */
-            Location?: string;
-            [name: string]: unknown;
-          };
-          content?: never;
-        };
-        400: components["responses"]["BadRequest"];
-        401: components["responses"]["Unauthorized"];
-        403: components["responses"]["Forbidden"];
-      };
-    };
+    post: operations["_bulk-{User}.Imp/ort"];
     delete?: never;
     options?: never;
     head?: never;
@@ -595,4 +333,276 @@ export interface components {
   pathItems: never;
 }
 export type $defs = Record<string, never>;
-export type operations = Record<string, never>;
+export interface operations {
+  listUsers: {
+    parameters: {
+      query?: {
+        /** @description Page number (starting at 1) */
+        page?: components["parameters"]["page"];
+        /** @description Number of items per page */
+        pageSize?: components["parameters"]["pageSize"];
+        /** @description Filter by membership type */
+        membershipType?: "REGULAR" | "PREMIUM" | "STUDENT";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description A paginated list of users */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserPage"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+    };
+  };
+  createUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserCreate"];
+      };
+    };
+    responses: {
+      /** @description User created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      409: components["responses"]["Conflict"];
+    };
+  };
+  getUserDetails: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Unique user identifier (UUID) */
+        userId: components["parameters"]["userId"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description User details */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  replaceUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Unique user identifier (UUID) */
+        userId: components["parameters"]["userId"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserUpdate"];
+      };
+    };
+    responses: {
+      /** @description Updated user record */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  deleteUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Unique user identifier (UUID) */
+        userId: components["parameters"]["userId"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description User deleted (no content) */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  updateUserFields: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Unique user identifier (UUID) */
+        userId: components["parameters"]["userId"];
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserPatch"];
+      };
+    };
+    responses: {
+      /** @description Updated user record */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  listUserLoans: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Unique user identifier (UUID) */
+        userId: components["parameters"]["userId"];
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description List of loans */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Loan"][];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+      404: components["responses"]["NotFound"];
+    };
+  };
+  searchUsers: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": {
+          /** @description Partial match on user name */
+          name?: string;
+          /** Format: email */
+          email?: string;
+          /**
+           * Format: date
+           * @description Users who joined after this date
+           */
+          joinedAfter?: string;
+          /** @enum {string} */
+          membershipType?: "REGULAR" | "PREMIUM" | "STUDENT";
+        };
+      };
+    };
+    responses: {
+      /** @description Matching users */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserList"];
+        };
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+    };
+  };
+  "_bulk-{User}.Imp/ort": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /**
+           * Format: binary
+           * @description CSV file (headers: name,email,membershipType,registeredAt)
+           */
+          file?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description Bulk import accepted */
+      202: {
+        headers: {
+          /** @description URL to check bulk job status */
+          Location?: string;
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      400: components["responses"]["BadRequest"];
+      401: components["responses"]["Unauthorized"];
+      403: components["responses"]["Forbidden"];
+    };
+  };
+}
