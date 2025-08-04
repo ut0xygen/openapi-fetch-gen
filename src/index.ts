@@ -18,7 +18,7 @@ import {
  */
 export function generateClient(
   schemaFilePath: string,
-  options: { useOperationId?: boolean } = {},
+  options: { useOperationId?: boolean } = {}
 ): string {
   const project = new Project({
     compilerOptions: {
@@ -38,13 +38,13 @@ export function generateClient(
     pathsInterface,
     componentsInterface,
     path.basename(schemaFilePath),
-    options,
+    options
   );
 }
 
 function findInterface(
   sourceFile: SourceFile,
-  interfaceName: string,
+  interfaceName: string
 ): InterfaceDeclaration | undefined {
   return sourceFile.getInterfaces().find((i) => i.getName() === interfaceName);
 }
@@ -64,7 +64,7 @@ function generateClientCode(
   pathsInterface: InterfaceDeclaration,
   componentsInterface: InterfaceDeclaration | undefined,
   schemaFileName: string,
-  options: { useOperationId?: boolean } = {},
+  options: { useOperationId?: boolean } = {}
 ): string {
   const endpoints = extractEndpointsInfo(pathsInterface);
 
@@ -89,7 +89,7 @@ function generateClientCode(
 }
 
 function generateSchemaTypes(
-  componentsInterface: InterfaceDeclaration | undefined,
+  componentsInterface: InterfaceDeclaration | undefined
 ): string[] {
   const schemasProperty = componentsInterface?.getProperty("schemas");
 
@@ -104,7 +104,7 @@ function generateSchemaTypes(
           schemaName + (schemaName === "Client" ? "Schema" : "")
         ).replaceAll(/-/g, "_");
         types.push(
-          `export type ${schemaTypeName} = components["schemas"]["${schema.getName()}"];`,
+          `export type ${schemaTypeName} = components["schemas"]["${schema.getName()}"];`
         );
       }
     }
@@ -114,7 +114,7 @@ function generateSchemaTypes(
 }
 
 function extractEndpointsInfo(
-  pathsInterface: InterfaceDeclaration,
+  pathsInterface: InterfaceDeclaration
 ): EndpointInfo[] {
   const endpoints: EndpointInfo[] = [];
 
@@ -169,7 +169,7 @@ function extractEndpointsInfo(
             indexTypeNode.getLiteral().getKind() === SyntaxKind.StringLiteral
           ) {
             return sanitizeForOperation(
-              indexTypeNode.getLiteral().getText().slice(1, -1),
+              indexTypeNode.getLiteral().getText().slice(1, -1)
             );
           }
         }
@@ -288,7 +288,9 @@ function extractEndpointsInfo(
         })
         .join("");
 
-      const defaultOperationName = `${httpMethod}${camelCasePath.charAt(0).toUpperCase()}${camelCasePath.slice(1)}`;
+      const defaultOperationName = `${httpMethod}${camelCasePath
+        .charAt(0)
+        .toUpperCase()}${camelCasePath.slice(1)}`;
 
       endpoints.push({
         path,
@@ -308,11 +310,11 @@ function extractEndpointsInfo(
 
 function generateClientClass(
   endpoints: EndpointInfo[],
-  options: { useOperationId?: boolean } = {},
+  options: { useOperationId?: boolean } = {}
 ): string {
   const classCode = [
     `export class Client<HT extends Record<string, string>> {
-       private readonly client;
+       readonly client;
        private readonly defaultHeaders: HT;
 
        constructor(clientOptions: ClientOptions, defaultHeaders?: HT) {
@@ -368,7 +370,7 @@ function generateClientClass(
 
     // Method body
     classCode.push(
-      `        return await this.client.${httpMethod.toUpperCase()}("${path}", {`,
+      `        return await this.client.${httpMethod.toUpperCase()}("${path}", {`
     );
 
     if (paramsType) {
