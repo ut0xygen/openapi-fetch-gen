@@ -18,7 +18,7 @@ import {
  */
 export function generateClient(
   schemaFilePath: string,
-  options: { useOperationId?: boolean } = {}
+  options: { useOperationId?: boolean } = {},
 ): string {
   const project = new Project({
     compilerOptions: {
@@ -38,13 +38,13 @@ export function generateClient(
     pathsInterface,
     componentsInterface,
     path.basename(schemaFilePath),
-    options
+    options,
   );
 }
 
 function findInterface(
   sourceFile: SourceFile,
-  interfaceName: string
+  interfaceName: string,
 ): InterfaceDeclaration | undefined {
   return sourceFile.getInterfaces().find((i) => i.getName() === interfaceName);
 }
@@ -57,6 +57,7 @@ interface EndpointInfo {
   commentLines: string[];
   paramsType: string | null;
   bodyType: string | null;
+  bodyContentType: string | null;
   headerType: string | null;
 }
 
@@ -64,7 +65,7 @@ function generateClientCode(
   pathsInterface: InterfaceDeclaration,
   componentsInterface: InterfaceDeclaration | undefined,
   schemaFileName: string,
-  options: { useOperationId?: boolean } = {}
+  options: { useOperationId?: boolean } = {},
 ): string {
   const endpoints = extractEndpointsInfo(pathsInterface);
 
@@ -89,7 +90,7 @@ function generateClientCode(
 }
 
 function generateSchemaTypes(
-  componentsInterface: InterfaceDeclaration | undefined
+  componentsInterface: InterfaceDeclaration | undefined,
 ): string[] {
   const schemasProperty = componentsInterface?.getProperty("schemas");
 
@@ -104,7 +105,7 @@ function generateSchemaTypes(
           schemaName + (schemaName === "Client" ? "Schema" : "")
         ).replaceAll(/-/g, "_");
         types.push(
-          `export type ${schemaTypeName} = components["schemas"]["${schema.getName()}"];`
+          `export type ${schemaTypeName} = components["schemas"]["${schema.getName()}"];`,
         );
       }
     }
@@ -114,7 +115,7 @@ function generateSchemaTypes(
 }
 
 function extractEndpointsInfo(
-  pathsInterface: InterfaceDeclaration
+  pathsInterface: InterfaceDeclaration,
 ): EndpointInfo[] {
   const endpoints: EndpointInfo[] = [];
 
@@ -169,7 +170,7 @@ function extractEndpointsInfo(
             indexTypeNode.getLiteral().getKind() === SyntaxKind.StringLiteral
           ) {
             return sanitizeForOperation(
-              indexTypeNode.getLiteral().getText().slice(1, -1)
+              indexTypeNode.getLiteral().getText().slice(1, -1),
             );
           }
         }
@@ -249,6 +250,7 @@ function extractEndpointsInfo(
       }
 
       const requestBodyProp = decl.getType().getProperty("requestBody");
+      let requestBodyContentType: string | null = null;
       if (requestBodyProp) {
         const t = requestBodyProp.getTypeAtLocation(decl);
         if (t.getText() !== "never") {
@@ -257,6 +259,8 @@ function extractEndpointsInfo(
           const contentTypeProps = contentType.getProperties();
 
           if (contentTypeProps.length > 0 && contentTypeProps[0]) {
+            requestBodyContentType =
+              contentType.getProperties()?.[0]?.getName() || null;
             requestBodyType = contentTypeProps[0]
               .getTypeAtLocation(decl)
               .getText();
@@ -300,6 +304,7 @@ function extractEndpointsInfo(
         commentLines,
         paramsType,
         bodyType: requestBodyType,
+        bodyContentType: requestBodyContentType,
         headerType: headerType ? headerType["text"] : null,
       });
     }
@@ -310,7 +315,7 @@ function extractEndpointsInfo(
 
 function generateClientClass(
   endpoints: EndpointInfo[],
-  options: { useOperationId?: boolean } = {}
+  options: { useOperationId?: boolean } = {},
 ): string {
   const classCode = [
     `export class Client<HT extends Record<string, string>> {
@@ -334,6 +339,7 @@ function generateClientClass(
       commentLines,
       paramsType,
       bodyType,
+      bodyContentType,
     } = endpoint;
 
     const methodName =
@@ -370,14 +376,17 @@ function generateClientClass(
 
     // Method body
     classCode.push(
-      `        return await this.client.${httpMethod.toUpperCase()}("${path}", {`
+      `        return await this.client.${httpMethod.toUpperCase()}("${path}", {`,
     );
 
     if (paramsType) {
       if (endpoint.headerType) {
+        const contentTypeHeader = bodyContentType
+          ? `, "Content-Type": "${bodyContentType}"`
+          : "";
         classCode.push(`params: {
   ...params,
-  header: {...this.defaultHeaders, ...params.header} as ${endpoint.headerType},
+  header: {...this.defaultHeaders, ...params.header${contentTypeHeader}} as ${endpoint.headerType},
 },`);
       } else {
         classCode.push("params,");

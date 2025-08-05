@@ -173,6 +173,7 @@ function extractEndpointsInfo(pathsInterface) {
                 }
             }
             const requestBodyProp = decl.getType().getProperty("requestBody");
+            let requestBodyContentType = null;
             if (requestBodyProp) {
                 const t = requestBodyProp.getTypeAtLocation(decl);
                 if (t.getText() !== "never") {
@@ -180,6 +181,8 @@ function extractEndpointsInfo(pathsInterface) {
                     const contentType = contentProp.getTypeAtLocation(decl);
                     const contentTypeProps = contentType.getProperties();
                     if (contentTypeProps.length > 0 && contentTypeProps[0]) {
+                        requestBodyContentType =
+                            contentType.getProperties()?.[0]?.getName() || null;
                         requestBodyType = contentTypeProps[0]
                             .getTypeAtLocation(decl)
                             .getText();
@@ -215,6 +218,7 @@ function extractEndpointsInfo(pathsInterface) {
                 commentLines,
                 paramsType,
                 bodyType: requestBodyType,
+                bodyContentType: requestBodyContentType,
                 headerType: headerType ? headerType["text"] : null,
             });
         }
@@ -234,7 +238,7 @@ function generateClientClass(endpoints, options = {}) {
     `,
     ];
     for (const endpoint of endpoints) {
-        const { path, httpMethod, operationName, operationId, commentLines, paramsType, bodyType, } = endpoint;
+        const { path, httpMethod, operationName, operationId, commentLines, paramsType, bodyType, bodyContentType, } = endpoint;
         const methodName = options.useOperationId && operationId ? operationId : operationName;
         if (commentLines.length > 0) {
             classCode.push("    /**");
@@ -258,9 +262,12 @@ function generateClientClass(endpoints, options = {}) {
         classCode.push(`        return await this.client.${httpMethod.toUpperCase()}("${path}", {`);
         if (paramsType) {
             if (endpoint.headerType) {
+                const contentTypeHeader = bodyContentType
+                    ? `, "Content-Type": "${bodyContentType}"`
+                    : "";
                 classCode.push(`params: {
   ...params,
-  header: {...this.defaultHeaders, ...params.header} as ${endpoint.headerType},
+  header: {...this.defaultHeaders, ...params.header${contentTypeHeader}} as ${endpoint.headerType},
 },`);
             }
             else {
