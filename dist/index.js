@@ -229,7 +229,7 @@ function generateClientClass(endpoints, options = {}) {
     const classCode = [
         `export class Client<HT extends Record<string, string>> {
        readonly client;
-       private readonly defaultHeaders: HT;
+       defaultHeaders: HT;
 
        constructor(clientOptions: ClientOptions, defaultHeaders?: HT) {
          this.client = createClient<paths>(clientOptions);
