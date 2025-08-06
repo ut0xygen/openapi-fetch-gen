@@ -102,7 +102,7 @@ export function extractEndpointsInfo(
           .map((kv) => `${kv.name}: ${kv.text}`);
         let optsType: string | null = null;
         if (headerType) {
-          const epHeader = headerType["text"];
+          const epHeader = `Omit<${headerType["text"]}, "Content-Type">`;
           const keysIncludedInBothHeaders = `Extract<keyof HT, keyof ${epHeader}>`;
           const keysIncludedOnlyInEpHeader = `Exclude<keyof ${epHeader}, ${keysIncludedInBothHeaders}>`;
           const typePickedByKeysIncludedOnlyInEpHeader = `Pick<${epHeader}, ${keysIncludedOnlyInEpHeader}>`;

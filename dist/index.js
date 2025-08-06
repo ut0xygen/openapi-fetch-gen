@@ -69,7 +69,7 @@ function genClientClassCode(eps, opts = {}) {
     })
         .join("");
     return `
-export class Client<HT extends Record<string, string>> {
+export class Client<HT extends Record<string, string> = never> {
     readonly client: ClientOap<paths>;
     defaultHeaders: HT;
 
