@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "clean": "rm -rf ./dist/*",
-    "build": "tsc",
+    "build": "pnpm clean && tsc",
     "lint": "biome check src",
     "fix": "biome check --write src",
     "test": "pnpm test:clean && vitest run",
