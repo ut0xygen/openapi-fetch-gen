@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { Command } from "commander";
 import { version } from "../package.json";
-import { generateClient } from "./index";
+import { genClient } from "./index";
 
 const program = new Command();
 
@@ -33,25 +33,23 @@ program
 const options = program.opts();
 
 try {
-  const start = Date.now() / 1000.0;
+  const tStart = Date.now() / 1000.0;
 
-  const inputPath = path.resolve(options["input"]);
-  const outputPath = path.resolve(options["output"]);
+  const pathIn = path.resolve(options["input"]);
+  const pathOut = path.resolve(options["output"]);
   const useOperationId = options["useOperationId"] || false;
 
-  if (!fs.existsSync(inputPath)) {
-    console.error(`Error: Input file not found: ${inputPath}`);
+  if (!fs.existsSync(pathIn)) {
+    console.error(`Error: Input file not found: ${pathIn}`);
     process.exit(1);
   }
 
-  const clientCode = generateClient(inputPath, { useOperationId });
-
-  fs.writeFileSync(outputPath, clientCode);
-
-  const end = Date.now() / 1000.0;
+  fs.writeFileSync(pathOut, genClient(pathIn, { useOperationId }));
 
   console.log(
-    `🏁 Successfully generated client at [${(end - start).toFixed(2)}ms]: ${outputPath}`,
+    `🏁 Successfully generated client at [${(
+      Date.now() / 1000.0 - tStart
+    ).toFixed(2)}ms]: ${pathOut}`,
   );
 } catch (error) {
   console.error(
