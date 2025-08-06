@@ -17,7 +17,7 @@ program
     .requiredOption("-i, --input <path>", "path to input OpenAPI TypeScript definition file")
     .option("-o, --output <path>", "path to output generated client file", "./client.ts")
     .option("--use-operation-id", "use operationId from OpenAPI schema for method names instead of generating from path", false)
-    .option("--schema-import-path-prefix <dir>", "prefix for the import path of the OpenAPI schema", "")
+    .option("--schema-import-path-prefix <prefix>", "prefix for the import path of the OpenAPI schema", "")
     .parse(process.argv);
 const options = program.opts();
 try {

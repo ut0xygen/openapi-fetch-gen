@@ -29,7 +29,7 @@ program
     false,
   )
   .option(
-    "--schema-import-path-prefix <dir>",
+    "--schema-import-path-prefix <prefix>",
     "prefix for the import path of the OpenAPI schema",
     "",
   )
