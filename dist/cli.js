@@ -17,6 +17,7 @@ program
     .requiredOption("-i, --input <path>", "path to input OpenAPI TypeScript definition file")
     .option("-o, --output <path>", "path to output generated client file", "./client.ts")
     .option("--use-operation-id", "use operationId from OpenAPI schema for method names instead of generating from path", false)
+    .option("--schema-import-path-prefix <dir>", "prefix for the import path of the OpenAPI schema", "")
     .parse(process.argv);
 const options = program.opts();
 try {
@@ -24,11 +25,12 @@ try {
     const pathIn = node_path_1.default.resolve(options["input"]);
     const pathOut = node_path_1.default.resolve(options["output"]);
     const useOperationId = options["useOperationId"] || false;
+    const schemaImportPathPrefix = options["schemaImportPathPrefix"] || undefined;
     if (!node_fs_1.default.existsSync(pathIn)) {
         console.error(`Error: Input file not found: ${pathIn}`);
         process.exit(1);
     }
-    node_fs_1.default.writeFileSync(pathOut, (0, index_1.genClient)(pathIn, { useOperationId }));
+    node_fs_1.default.writeFileSync(pathOut, (0, index_1.genClient)(pathIn, { useOperationId, schemaImportPathPrefix }));
     console.log(`🏁 Successfully generated client at [${(Date.now() / 1000.0 - tStart).toFixed(2)}ms]: ${pathOut}`);
 }
 catch (error) {

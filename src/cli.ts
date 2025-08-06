@@ -28,6 +28,11 @@ program
     "use operationId from OpenAPI schema for method names instead of generating from path",
     false,
   )
+  .option(
+    "--schema-import-path-prefix <dir>",
+    "prefix for the import path of the OpenAPI schema",
+    "",
+  )
   .parse(process.argv);
 
 const options = program.opts();
@@ -38,13 +43,17 @@ try {
   const pathIn = path.resolve(options["input"]);
   const pathOut = path.resolve(options["output"]);
   const useOperationId = options["useOperationId"] || false;
+  const schemaImportPathPrefix = options["schemaImportPathPrefix"] || undefined;
 
   if (!fs.existsSync(pathIn)) {
     console.error(`Error: Input file not found: ${pathIn}`);
     process.exit(1);
   }
 
-  fs.writeFileSync(pathOut, genClient(pathIn, { useOperationId }));
+  fs.writeFileSync(
+    pathOut,
+    genClient(pathIn, { useOperationId, schemaImportPathPrefix }),
+  );
 
   console.log(
     `🏁 Successfully generated client at [${(
