@@ -46,7 +46,7 @@ function genClientClassCode(eps, opts = {}) {
             : "";
         const paramsEach = Object.entries({
             header: ep.headerType
-                ? `{${headerContentType}...this.defaultHeaders, ...opts.header} as ${ep.headerType}`
+                ? `{${headerContentType}...this.defaultHeaders, ...(opts?.header ?? [])} as ${ep.headerType}`
                 : "",
             path: ep.pathType ? "opts.path" : "",
             query: ep.queryType ? "opts.query" : "",

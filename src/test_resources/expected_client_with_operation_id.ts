@@ -230,7 +230,7 @@ export class Client<HT extends Record<string, string> = never> {
   ) {
     return await this.client.GET("/users/bulk/{jobId}", {
       params: {
-        header: { ...this.defaultHeaders, ...opts.header } as {
+        header: { ...this.defaultHeaders, ...(opts?.header ?? []) } as {
           Authorization: string;
           "Application-Version": string;
           "Something-Id": string;
