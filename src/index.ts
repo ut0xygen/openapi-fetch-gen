@@ -83,10 +83,14 @@ function genClientClassCode(
       ]
         .filter((v) => v !== "")
         .join(",\n            ");
+      const isOptionalOpts =
+        !ep.queryType && !ep.pathType && !ep.bodyType ? "?" : "";
 
       return `\n
     async ${opts.useOperationId && ep.opId ? ep.opId : ep.opName}(${
-      ep.optsType ? `\n       opts: ${ep.optsType}    ) {` : ") {"
+      ep.optsType
+        ? `\n       opts${isOptionalOpts}: ${ep.optsType}    ) {`
+        : ") {"
     }
         return await this.client.${ep.method.toUpperCase()}("${ep.path}", ${
           params ? `{\n            ${params}\n        });` : "{});"

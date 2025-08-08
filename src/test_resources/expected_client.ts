@@ -226,9 +226,7 @@ export class Client<HT extends Record<string, string> = never> {
                 },
                 "Content-Type"
               >;
-        }) & {
-      path: { jobId: string };
-    },
+        }) & { path: { jobId: string } },
   ) {
     return await this.client.GET("/users/bulk/{jobId}", {
       params: {

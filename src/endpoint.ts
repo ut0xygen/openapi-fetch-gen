@@ -115,9 +115,7 @@ export function extractEndpointsInfo(
             // 2. requires all the header values (overriding default headers)
             `(
             [${keysIncludedOnlyInEpHeader}] extends [never]
-                ? {
-                    header?: ${epHeader}
-                }
+                ? { header?: ${epHeader} }
                 : {
                     header:
                         | (
@@ -126,15 +124,11 @@ export function extractEndpointsInfo(
                         )
                         | ${epHeader}
                 }
-            ) & {
-                ${nonHeaderParams.join(",\n                ")}
-            }`;
+            ) & { ${nonHeaderParams.join(",\n                ")} }`;
         } else {
           optsType =
             nonHeaderParams.length > 0
-              ? `{
-            ${nonHeaderParams.join(",            \n")}
-        }`
+              ? `{ ${nonHeaderParams.join(",            \n")}}`
               : null;
         }
 

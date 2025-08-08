@@ -83,9 +83,7 @@ function extractEndpointsInfo(pathsIf) {
                 optsType =
                     `(
             [${keysIncludedOnlyInEpHeader}] extends [never]
-                ? {
-                    header?: ${epHeader}
-                }
+                ? { header?: ${epHeader} }
                 : {
                     header:
                         | (
@@ -94,16 +92,12 @@ function extractEndpointsInfo(pathsIf) {
                         )
                         | ${epHeader}
                 }
-            ) & {
-                ${nonHeaderParams.join(",\n                ")}
-            }`;
+            ) & { ${nonHeaderParams.join(",\n                ")} }`;
             }
             else {
                 optsType =
                     nonHeaderParams.length > 0
-                        ? `{
-            ${nonHeaderParams.join(",            \n")}
-        }`
+                        ? `{ ${nonHeaderParams.join(",            \n")}}`
                         : null;
             }
             eps.push({
